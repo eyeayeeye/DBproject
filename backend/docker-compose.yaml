@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - mysql_data:/data
+    ports:
+      - 3306:3306
+volumes:
+  mysql_data:
+    driver: local
