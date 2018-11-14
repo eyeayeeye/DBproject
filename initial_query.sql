@@ -1,3 +1,5 @@
+drop database driverManagement;
+
 create database driverManagement;
 
 use driverManagement;
@@ -60,9 +62,9 @@ CREATE TABLE Student(
     FOREIGN KEY (RGID) REFERENCES Route_group(RGID) ON DELETE SET NULL
     
 );
-DROP TABLE Student;
-DROP TABLE Route_group;
-DROP TABLE Driver;
+-- DROP TABLE Student;
+-- DROP TABLE Route_group;
+-- DROP TABLE Driver;
 SELECT * FROM Student;
 SELECT * FROM Route_group;
 SELECT * FROM Driver;
@@ -76,6 +78,14 @@ VALUES ('Test2', 'Sur2', '1234567890124', 'test2', '1234', DATE '2015-12-17', 18
 INSERT INTO Driver
 ( Name, Surname, Citizen_ID, Username, Password, Birthday, Age, Address, Phone_no, Role, Weight, Height, Blood_type, Salary, License_no)
 VALUES ('Test3', 'Sur3', '1234567890125', 'test3', '1234', DATE '2015-12-17', 18,'PhayathaiRd', '081-1234567', 'Driver', 60, 160.0, 'A', 500000, 'AB1236');
+
+INSERT INTO Route_group
+(Destination,Driver_ID) VALUES ('chula','1');
+INSERT INTO Route_group
+(Destination,Driver_ID) VALUES ('paragon','2');
+INSERT INTO Route_group
+(Destination,Driver_ID) VALUES ('mbk','3');
+
 
 INSERT INTO Student
 ( Name, Surname, Citizen_ID, Username, Password, Birthday, Age, Address, Phone_no, Role, Weight, Height, Blood_type, Behavior_score, Status)

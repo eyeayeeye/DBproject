@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/create', (req, res) => {
-  db.query('SELECT * FROM Student', (error,result,fields) => {
-    console.log(result)
+  db.query('SELECT * FROM Route_group', (error, result, fields) => {
+    // console.log(result)
     res.send(result)
   })
 })
