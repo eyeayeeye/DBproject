@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Table, Divider, Tag } from 'antd'
 import { Layout, Menu, Icon } from 'antd'
 import axios from 'axios'
-import { RSA_NO_PADDING } from 'constants'
 
 const columns = [
   {
@@ -46,7 +45,7 @@ class HomePage extends Component {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('http://localhost:3002/create')
+    const { data } = await axios.get('http://localhost:3002/all')
     this.setState({ data: data })
   }
 
