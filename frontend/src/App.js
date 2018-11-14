@@ -25,7 +25,7 @@ class App extends Component {
               <span className="nav-text">Home</span>
             </Menu.Item>
             <Menu.Item key="2">
-              <Icon type="video-camera" />
+              <Icon type="video-cameraaaa" />
               <span className="nav-text">Create</span>
             </Menu.Item>
             <Menu.Item key="3">
