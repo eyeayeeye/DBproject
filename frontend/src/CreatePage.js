@@ -1,5 +1,5 @@
 import React from 'react'
-import { Input, Form, Select, Button } from 'antd'
+import { Input, Form, Select, Button, message } from 'antd'
 import axios from 'axios'
 import _ from 'lodash'
 
@@ -31,8 +31,12 @@ class CreatePage extends React.Component {
       ID: this.state.selected_driver_id,
       destination: this.state.destination
     }
-    const result = await axios.post('http://localhost:3002/create',payload)
-    console.log(result)
+    const { data } = await axios.post('http://localhost:3002/create',payload)
+    if(data.message == 'error'){
+      message.error('Something went wrong!',0.3)
+    }else{
+      message.success('Success!', 0.3)
+    }
   }
   render() {
     return (

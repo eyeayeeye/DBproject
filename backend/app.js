@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/all', (req, res) => {
-  db.query('SELECT * FROM Route_group', (error, result, fields) => {
+  db.query('SELECT * FROM Route_group r, Driver d WHERE r.Driver_ID = d.ID', (error, result, fields) => {
     if (!error) res.status(200).send(result)
     else res.status(400).send({ message: 'error' })
   })
@@ -27,8 +27,8 @@ app.post('/create', (req, res) => {
   db.query(
     `INSERT INTO Route_group (Destination, Driver_ID) VALUES ('${destination}', '${driverID}')`,
     (error, result, fields) => {
-      if (!error) res.status(200).send(result)
-      else res.status(400).send({ message: 'error' })
+      if (!error) res.send(result)
+      else res.send({ message: 'error' })
     }
   )
 })

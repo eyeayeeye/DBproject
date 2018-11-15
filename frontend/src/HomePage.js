@@ -17,9 +17,13 @@ const columns = [
     dataIndex: 'Driver_ID'
   },
   {
+    title: 'Driver Name',
+    dataIndex: 'Name'
+  },
+  {
     title: 'Actions',
     render: (text, record) => {
-      console.log(record)
+      // console.log(record)
       return (
         <span>
           <a href="javascript:;">
