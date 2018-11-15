@@ -21,4 +21,33 @@ app.get('/create', (req, res) => {
   })
 })
 
+app.post('/edit', (req, res) => {
+  // console.log(req.body)
+  const des = req.body.Destination
+  const rgid = req.body.RGID
+  const d_id = req.body.driver_id
+  db.query(
+    'update Route_group set Destination=' + des + ',Driver_ID=' + driver_id + 'where RGID=' + rgid,
+    (error, result, fields) => {
+      // console.log(result)
+      if (!error) {
+        res.status(200).send({ message: 'success' })
+      }
+    }
+  )
+})
+
+app.post('/delete', (req, res) => {
+  // console.log(req.body)
+  const rgid = req.body.RGID
+  db.query('delete from Route_group where RGID=' + rgid, (error, result, fields) => {
+    // console.log(result)
+    if (error) {
+      res.status(400).send({ message: 'fail' })
+    } else res.status(200).send({ message: 'success' })
+  })
+})
+
 module.exports = app
+
+// update route_group set Destination = '' where RGID  =1;
