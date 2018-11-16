@@ -31,11 +31,11 @@ class CreatePage extends React.Component {
       ID: this.state.selected_driver_id,
       destination: this.state.destination
     }
-    const { data } = await axios.post('http://localhost:3002/create',payload)
-    if(data.message == 'error'){
-      message.error('Something went wrong!',0.3)
-    }else{
+    try {
+      const { data } = await axios.post('http://localhost:3002/create', payload)
       message.success('Success!', 0.3)
+    } catch (e) {
+      message.error('Something went wrong!', 0.3)
     }
   }
   render() {

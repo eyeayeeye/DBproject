@@ -27,8 +27,8 @@ app.post('/create', (req, res) => {
   db.query(
     `INSERT INTO Route_group (Destination, Driver_ID) VALUES ('${destination}', '${driverID}')`,
     (error, result, fields) => {
-      if (!error) res.send(result)
-      else res.send({ message: 'error' })
+      if (!error) res.status(200).send(result)
+      else res.status(400).send({ message: 'error' })
     }
   )
 })
@@ -41,16 +41,16 @@ app.get('/drivers', (req, res) => {
 })
 
 app.post('/edit', (req, res) => {
-  // console.log(req.body)
-  const des = req.body.Destination
+  const destination = req.body.Destination
   const rgid = req.body.RGID
-  const d_id = req.body.driver_id
+  const driver_id = req.body.driver_id
   db.query(
-    'update Route_group set Destination=' + des + ',Driver_ID=' + driver_id + 'where RGID=' + rgid,
+    `UPDATE Route_group SET Destination='${destination}', Driver_ID='${driver_id}' WHERE RGID=${rgid}`,
     (error, result, fields) => {
-      // console.log(result)
       if (!error) {
         res.status(200).send({ message: 'success' })
+      } else {
+        res.status(400).send({ message: 'error' })
       }
     }
   )
