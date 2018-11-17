@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Divider, Button, message } from 'antd'
+import { Table, Divider, Button, message, Popconfirm } from 'antd'
 import { Icon } from 'antd'
 import axios from 'axios'
 import _ from 'lodash'
@@ -53,6 +53,20 @@ class HomePage extends Component {
     const newEdit = [...this.state.editting]
     newEdit[index] ^= 1
     this.setState({ temp_data: this.state.data, editting: newEdit })
+  }
+  onDelete = index => async () => {
+    const payload = {
+      RGID: this.state.data[index].RGID
+    }
+    try {
+      const { data } = await axios.post('http://localhost:3002/route_group/delete', payload)
+      const newData = [...this.state.data]
+      newData.splice(index, 1)
+      this.setState({ data: newData })
+      message.success('Success!', 0.3)
+    } catch (e) {
+      message.error('Something went wrong!', 0.3)
+    }
   }
   render() {
     const columns = [
@@ -113,15 +127,15 @@ class HomePage extends Component {
                 }}
               >
                 <span className="nav-text">Edit</span>
-                {'  '}
                 <Icon type="edit" />
               </a>
               <Divider type="vertical" />
-              <a href="#">
-                <span className="nav-text">Delete</span>
-                {'  '}
-                <Icon type="delete" />
-              </a>
+              <Popconfirm title="Are you sure to delete this task?" onConfirm={this.onDelete(index)}>
+                <a>
+                  <span className="nav-text">Delete</span>
+                  <Icon type="delete" />
+                </a>
+              </Popconfirm>
             </span>
           )
         },

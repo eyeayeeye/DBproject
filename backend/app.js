@@ -56,13 +56,11 @@ app.post('/edit', (req, res) => {
   )
 })
 
-app.post('/delete', (req, res) => {
-  // console.log(req.body)
+app.post('/route_group/delete', (req, res) => {
   const rgid = req.body.RGID
-  db.query('delete from Route_group where RGID=' + rgid, (error, result, fields) => {
-    // console.log(result)
+  db.query(`DELETE FROM Route_group WHERE RGID='${rgid}'`, (error, result, fields) => {
     if (error) {
-      res.status(400).send({ message: 'fail' })
+      res.status(400).send({ message: 'error' })
     } else res.status(200).send({ message: 'success' })
   })
 })
