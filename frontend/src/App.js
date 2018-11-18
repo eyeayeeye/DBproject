@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Layout, Menu, Icon } from 'antd'
 import HomePage from './HomePage'
 import CreatePage from './CreatePage'
+import AddPage from './AddPage'
 import './App.css'
 const { Header, Content, Footer, Sider } = Layout
 
@@ -53,7 +54,7 @@ class App extends Component {
           </Header>
           <Content style={{ margin: '24px 16px 0' }}>
             <pre style={{ padding: 24, background: '#fff', minHeight: 250, width: '100%', textAlign: 'center' }}>
-              {this.state.view == 1 ? <HomePage /> : <CreatePage />}
+              {this.state.view == 1 ? <HomePage /> : this.state.view == 2 ? <CreatePage /> : <AddPage />}
             </pre>
           </Content>
         </Layout>

@@ -67,6 +67,23 @@ app.post('/delete', (req, res) => {
   })
 })
 
+app.get('/get-student', (req, res) => {
+  db.query('SELECT ID, Name,Surname FROM Student', (error, result, fields) => {
+    if (!error) res.status(200).send(result)
+    else res.status(400).send({ message: 'error' })
+  })
+})
+
+app.post('/add-student', (req, res) => {
+  const rgid = req.body.rgid
+  const ID = req.body.ID
+  console.log(rgid, ID)
+  db.query(`update Student set RGID='${rgid}' where ID= '${ID}'`, (error, result, fields) => {
+    if (!error) res.send(result)
+    else res.send({ message: 'error' })
+  })
+})
+
 module.exports = app
 
 // update route_group set Destination = '' where RGID  =1;
