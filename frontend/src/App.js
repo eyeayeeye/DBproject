@@ -20,18 +20,18 @@ class App extends Component {
             mode="inline"
             defaultSelectedKeys={['1']}
             onClick={(item, key, keyPath) => {
-              this.setState({ view: item.key })
+              this.setState({ view: Number(item.key) })
             }}
           >
-            <Menu.Item key="1">
+            <Menu.Item key={1}>
               <Icon type="home" />
               <span className="nav-text">Home</span>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key={2}>
               <Icon type="plus-circle" />
               <span className="nav-text">Create</span>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key={3}>
               <Icon type="user-add" />
               <span className="nav-text">Add/Remove students</span>
             </Menu.Item>
@@ -52,7 +52,7 @@ class App extends Component {
               Route Group Management System
             </div>
           </Header>
-          <Content style={{ margin: '24px 16px 0' }}>
+          <Content style={{ margin: '24px 25px 0' }}>
             <pre style={{ padding: 24, background: '#fff', minHeight: 250, width: '100%', textAlign: 'center' }}>
               {this.state.view == 1 ? <HomePage /> : this.state.view == 2 ? <CreatePage /> : <AddPage />}
             </pre>
