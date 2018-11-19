@@ -5,13 +5,15 @@ import axios from 'axios'
 import _ from 'lodash'
 
 import EditableField from './EditableField'
+import RouteGroupManager from './RouteGroupManager'
 
 class HomePage extends Component {
   state = {
     data: [],
     temp_data: [],
     editting: [],
-    drivers: []
+    drivers: [],
+    is_browse: 0
   }
 
   async componentDidMount() {
@@ -40,7 +42,7 @@ class HomePage extends Component {
       driver_id: this.state.temp_data[index].Driver_ID
     }
     try {
-      const { data } = await axios.post('http://localhost:3002/edit', payload)
+      await axios.post('http://localhost:3002/edit', payload)
       const newEdit = [...this.state.editting]
       newEdit[index] ^= 1
       this.setState({ data: this.state.temp_data, editting: newEdit })
@@ -130,8 +132,18 @@ class HomePage extends Component {
                 <Icon type="edit" />
               </a>
               <Divider type="vertical" />
+              <a
+                href="#"
+                onClick={() => {
+                  this.setState({ is_browse: this.state.is_browse ^ 1, selected_index: index })
+                }}
+              >
+                <span className="nav-text">Manage</span>
+                <Icon type="setting" />
+              </a>
+              <Divider type="vertical" />
               <Popconfirm title="Are you sure to delete this task?" onConfirm={this.onDelete(index)}>
-                <a>
+                <a className="delete">
                   <span className="nav-text">Delete</span>
                   <Icon type="delete" />
                 </a>
@@ -144,13 +156,25 @@ class HomePage extends Component {
     ]
     return (
       <div style={{ textAlign: 'center', width: '100%', height: '100%' }}>
-        <span style={{ letterSpacing: '1px', fontSize: '20px', fontWeight: 'bold' }}> {'Route Groups Table'} </span>
-        <Table
-          style={{ marginTop: '20px' }}
-          columns={columns}
-          dataSource={this.state.data}
-          pagination={{ pageSize: 10 }}
-        />
+        {this.state.is_browse ? (
+          <RouteGroupManager
+            RGID={this.state.data[this.state.selected_index].RGID}
+            Destination={this.state.data[this.state.selected_index].Destination}
+            goBack={() => {
+              this.setState({ is_browse: this.state.is_browse ^ 1 })
+            }}
+          />
+        ) : (
+          <React.Fragment>
+            <span style={{ letterSpacing: '1px', fontSize: '20px', fontWeight: 'bold' }}> {'Route Groups Table'} </span>
+            <Table
+              style={{ marginTop: '20px' }}
+              columns={columns}
+              dataSource={this.state.data}
+              pagination={{ pageSize: 10 }}
+            />
+          </React.Fragment>
+        )}
       </div>
     )
   }

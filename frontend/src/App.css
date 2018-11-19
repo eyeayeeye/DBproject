@@ -47,6 +47,22 @@
 .edit-select {
   width: 100%;
 }
-.nav-text{
+.nav-text {
   margin-right: 5px;
+}
+.route-group-back {
+  margin-top: 5px;
+  float: left;
+}
+.route-group-back:hover {
+  cursor: pointer;
+  color: steelblue;
+}
+.route-group-manager-header {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
+.delete {
+  color: #f5222d;
 }

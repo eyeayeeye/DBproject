@@ -65,6 +65,25 @@ app.post('/route_group/delete', (req, res) => {
   })
 })
 
+app.post('/route_group/students', (req, res) => {
+  const rgid = req.body.RGID
+  db.query(`SELECT * FROM Student WHERE RGID='${rgid}'`, (error, result, fields) => {
+    if (error) {
+      res.status(400).send({ message: 'error' })
+    } else res.status(200).send(result)
+  })
+})
+
+app.post('/route_group/delete-student', (req, res) => {
+  const rgid = req.body.RGID
+  const student_id = req.body.student_id
+  db.query(`UPDATE Student set RGID='${rgid}' WHERE ID='${student_id}'`, (error, result, fields) => {
+    if (error) {
+      res.status(400).send({ message: 'error' })
+    } else res.status(200).send({ message: 'success' })
+  })
+})
+
 app.get('/get-student', (req, res) => {
   db.query('SELECT ID, Name,Surname FROM Student', (error, result, fields) => {
     if (!error) res.status(200).send(result)
@@ -76,7 +95,7 @@ app.post('/add-student', (req, res) => {
   const rgid = req.body.rgid
   const ID = req.body.ID
   console.log(rgid, ID)
-  db.query(`update Student set RGID='${rgid}' where ID= '${ID}'`, (error, result, fields) => {
+  db.query(`UPDATE Student SET RGID='${rgid}' WHERE ID= '${ID}'`, (error, result, fields) => {
     if (!error) res.send(result)
     else res.send({ message: 'error' })
   })
