@@ -15,26 +15,39 @@ app.get('/', (req, res) => {
 })
 
 app.get('/all', (req, res) => {
-  db.query('SELECT * FROM Route_group r, Driver d WHERE r.Driver_ID = d.ID', (error, result, fields) => {
+  db.query('SELECT * FROM Route_group r', (error, result, fields) => {
     if (!error) res.status(200).send(result)
     else res.status(400).send({ message: 'error' })
   })
 })
 
-app.post('/create', (req, res) => {
+app.post('/create', async (req, res) => {
   const driverID = req.body.ID
   const destination = req.body.destination
-  db.query(
-    `INSERT INTO Route_group (Destination, Driver_ID) VALUES ('${destination}', '${driverID}')`,
-    (error, result, fields) => {
-      if (!error) res.status(200).send(result)
-      else res.status(400).send({ message: 'error' })
+  db.query(`SELECT * FROM Route_group WHERE Driver_ID='${driverID}'`, (error, result, fields) => {
+    if (error || result.length!==0) {
+      res.status(400).send({ message: 'error' })
+    } else {
+      db.query(
+        `INSERT INTO Route_group (Destination, Driver_ID) VALUES ('${destination}', '${driverID}')`,
+        (error, result, fields) => {
+          if (!error) res.status(200).send(result)
+          else res.status(400).send({ message: 'error' })
+        }
+      )
     }
-  )
+  })
 })
 
 app.get('/drivers', (req, res) => {
-  db.query('SELECT ID, Name FROM Driver', (error, result, fields) => {
+  db.query(`SELECT ID, Name, Surname FROM Driver `, (error, result, fields) => {
+    if (!error) res.status(200).send(result)
+    else res.status(400).send({ message: 'error' })
+  })
+})
+
+app.get('/students', (req, res) => {
+  db.query(`SELECT * FROM Student `, (error, result, fields) => {
     if (!error) res.status(200).send(result)
     else res.status(400).send({ message: 'error' })
   })
@@ -43,14 +56,19 @@ app.get('/drivers', (req, res) => {
 app.post('/edit', (req, res) => {
   const destination = req.body.Destination
   const rgid = req.body.RGID
-  const driver_id = req.body.driver_id
+  let driver_id = `'${req.body.driver_id}'`
+  if (driver_id == "'null'") driver_id = 'NULL'
   db.query(
-    `UPDATE Route_group SET Destination='${destination}', Driver_ID='${driver_id}' WHERE RGID=${rgid}`,
+    `UPDATE Route_group SET Destination='${destination}', Driver_ID=` +
+      driver_id +
+      ` WHERE RGID=${rgid} AND NOT EXISTS (SELECT * FROM (SELECT * FROM Route_group) AS a WHERE a.Driver_ID=` +
+      driver_id +
+      `)`,
     (error, result, fields) => {
-      if (!error) {
-        res.status(200).send({ message: 'success' })
-      } else {
+      if (error || result.affectedRows == 0) {
         res.status(400).send({ message: 'error' })
+      } else {
+        res.status(200).send({ message: 'success' })
       }
     }
   )
