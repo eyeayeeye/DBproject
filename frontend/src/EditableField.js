@@ -20,7 +20,7 @@ class EditableField extends React.Component {
         </Option>
         {_.map(this.props.drivers, driver => (
           <Option key={driver.ID} value={driver.ID}>
-            {`${driver.Name} ${driver.Surname}`}
+            {`${driver.ID} : ${driver.Name} ${driver.Surname}`}
           </Option>
         ))}
       </Select>

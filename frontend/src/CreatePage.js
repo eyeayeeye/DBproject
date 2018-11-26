@@ -54,7 +54,7 @@ class CreatePage extends React.Component {
             <Select onChange={e => this.setState({ selected_driver_id: Number(e) })}>
               {_.map(this.state.drivers, driver => (
                 <Option key={driver.ID} value={driver.ID}>
-                  {`${driver.Name} ${driver.Surname}`}
+                  {`${driver.ID} : ${driver.Name} ${driver.Surname}`}
                 </Option>
               ))}
             </Select>

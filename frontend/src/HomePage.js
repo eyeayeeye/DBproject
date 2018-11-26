@@ -27,7 +27,7 @@ class HomePage extends Component {
 
   getDriverName = driver_id => {
     const driver = _.filter(this.state.drivers, driver => driver.ID === driver_id)
-    return `${_.get(driver, '0.Name', null)} ${_.get(driver, '0.Surname', null)}`
+    return `${driver_id} : ${_.get(driver, '0.Name', null)} ${_.get(driver, '0.Surname', null)}`
   }
 
   onDestinationChange = index => value => {
@@ -108,7 +108,7 @@ class HomePage extends Component {
           if (this.state.temp_data[index].Driver_ID == null) {
             value = '-'
           } else {
-            value = `${this.state.temp_data[index].Driver_ID} : ${this.getDriverName(this.state.temp_data[index].Driver_ID)}`
+            value = this.getDriverName(this.state.temp_data[index].Driver_ID)
           }
           return (
             <EditableField
@@ -167,6 +167,7 @@ class HomePage extends Component {
         width: 100
       }
     ]
+    console.log(this.state)
     return (
       <div style={{ textAlign: 'center', width: '100%', height: '100%' }}>
         {this.state.is_browse ? (
