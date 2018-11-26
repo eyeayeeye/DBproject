@@ -19,8 +19,9 @@ class HomePage extends Component {
   async componentDidMount() {
     const { data } = await axios.get('http://localhost:3002/all')
     const { data: drivers } = await axios.get('http://localhost:3002/drivers')
-    const mapped = _.map(data, obj => ({
-      ...obj
+    const mapped = _.map(data, (obj, index) => ({
+      ...obj,
+      key: index
     }))
     this.setState({ data: mapped, temp_data: mapped, editting: _.fill(Array(data.length), 0), drivers })
   }
@@ -92,9 +93,9 @@ class HomePage extends Component {
           return (
             <EditableField
               type="input"
-              value={this.state.temp_data[index].Destination}
-              edit={this.state.editting[index]}
-              onChange={this.onDestinationChange(index)}
+              value={this.state.temp_data[record.key].Destination}
+              edit={this.state.editting[record.key]}
+              onChange={this.onDestinationChange(record.key)}
             />
           )
         },
@@ -104,20 +105,21 @@ class HomePage extends Component {
         title: 'Driver',
         dataIndex: 'driver',
         render: (text, record, index) => {
+          console.log(text, record, index)
           var value
-          if (this.state.temp_data[index].Driver_ID == null) {
+          if (this.state.temp_data[record.key].Driver_ID == null) {
             value = '-'
           } else {
-            value = this.getDriverName(this.state.temp_data[index].Driver_ID)
+            value = this.getDriverName(this.state.temp_data[record.key].Driver_ID)
           }
           return (
             <EditableField
               type="select"
               value={value}
               drivers={this.state.drivers}
-              current_driver_id={this.state.temp_data[index].Driver_ID}
-              edit={this.state.editting[index]}
-              onChange={this.onDriverChange(index)}
+              current_driver_id={this.state.temp_data[record.key].Driver_ID}
+              edit={this.state.editting[record.key]}
+              onChange={this.onDriverChange(record.key)}
             />
           )
         },
@@ -126,10 +128,10 @@ class HomePage extends Component {
       {
         title: 'Actions',
         render: (text, record, index) => {
-          return this.state.editting[index] ? (
+          return this.state.editting[record.key] ? (
             <span>
-              <Button type="primary" shape="circle" icon="check" size="small" onClick={this.handleSubmit(index)} />
-              <Button type="danger" shape="circle" icon="cross" size="small" onClick={this.handleCancel(index)} />
+              <Button type="primary" shape="circle" icon="check" size="small" onClick={this.handleSubmit(record.key)} />
+              <Button type="danger" shape="circle" icon="cross" size="small" onClick={this.handleCancel(record.key)} />
             </span>
           ) : (
             <span>
@@ -137,7 +139,7 @@ class HomePage extends Component {
                 href="#"
                 onClick={() => {
                   const newEdit = this.state.editting
-                  newEdit[index] ^= 1
+                  newEdit[record.key] ^= 1
                   this.setState({ editting: newEdit })
                 }}
               >
@@ -148,14 +150,14 @@ class HomePage extends Component {
               <a
                 href="#"
                 onClick={() => {
-                  this.setState({ is_browse: this.state.is_browse ^ 1, selected_index: index })
+                  this.setState({ is_browse: this.state.is_browse ^ 1, selected_index: record.key })
                 }}
               >
                 <span className="nav-text">Manage</span>
                 <Icon type="setting" />
               </a>
               <Divider type="vertical" />
-              <Popconfirm title="Are you sure to delete this task?" onConfirm={this.onDelete(index)}>
+              <Popconfirm title="Are you sure to delete this task?" onConfirm={this.onDelete(record.key)}>
                 <a className="delete">
                   <span className="nav-text">Delete</span>
                   <Icon type="delete" />
