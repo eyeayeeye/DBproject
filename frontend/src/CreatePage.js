@@ -40,27 +40,30 @@ class CreatePage extends React.Component {
   }
   render() {
     return (
-      <Form>
-        <FormItem {...inputItemLayout} label="Destination">
-          <Input
-            placeholder="Destination"
-            value={this.state.destination}
-            onChange={e => this.setState({ destination: e.target.value })}
-          />
-        </FormItem>
-        <FormItem {...selectItemLayout} label="Driver">
-          <Select onChange={e => this.setState({ selected_driver_id: Number(e) })}>
-            {_.map(this.state.drivers, driver => (
-              <Option key={driver.ID} value={driver.ID}>
-                {driver.Name}
-              </Option>
-            ))}
-          </Select>
-        </FormItem>
-        <FormItem {...buttonItemLayout}>
-          <Button onClick={this.handleSubmit}>Submit</Button>
-        </FormItem>
-      </Form>
+      <React.Fragment>
+        <span style={{ letterSpacing: '1px', fontSize: '20px', fontWeight: 'bold' }}> Create a Route Group </span>
+        <Form>
+          <FormItem {...inputItemLayout} label="Destination">
+            <Input
+              placeholder="Destination"
+              value={this.state.destination}
+              onChange={e => this.setState({ destination: e.target.value })}
+            />
+          </FormItem>
+          <FormItem {...selectItemLayout} label="Driver">
+            <Select onChange={e => this.setState({ selected_driver_id: Number(e) })}>
+              {_.map(this.state.drivers, driver => (
+                <Option key={driver.ID} value={driver.ID}>
+                  {`${driver.Name} ${driver.Surname}`}
+                </Option>
+              ))}
+            </Select>
+          </FormItem>
+          <FormItem {...buttonItemLayout}>
+            <Button onClick={this.handleSubmit}>Submit</Button>
+          </FormItem>
+        </Form>
+      </React.Fragment>
     )
   }
 }

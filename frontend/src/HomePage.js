@@ -19,8 +19,15 @@ class HomePage extends Component {
   async componentDidMount() {
     const { data } = await axios.get('http://localhost:3002/all')
     const { data: drivers } = await axios.get('http://localhost:3002/drivers')
-    const mapped = _.map(data, obj => ({ ...obj, driver: `${obj.Driver_ID}. ${obj.Name}` }))
+    const mapped = _.map(data, obj => ({
+      ...obj
+    }))
     this.setState({ data: mapped, temp_data: mapped, editting: _.fill(Array(data.length), 0), drivers })
+  }
+
+  getDriverName = driver_id => {
+    const driver = _.filter(this.state.drivers, driver => driver.ID === driver_id)
+    return `${_.get(driver, '0.Name', null)} ${_.get(driver, '0.Surname', null)}`
   }
 
   onDestinationChange = index => value => {
@@ -32,7 +39,8 @@ class HomePage extends Component {
   onDriverChange = index => driver_id => {
     const newData = [...this.state.temp_data]
     const newDriver = _.head(_.filter(this.state.drivers, driver => driver.ID === driver_id))
-    newData[index] = { ...newData[index], Driver_ID: newDriver.ID, Name: newDriver.Name }
+    if (newDriver) newData[index] = { ...newData[index], Driver_ID: newDriver.ID, Name: newDriver.Name }
+    else newData[index] = { ...newData[index], Driver_ID: null, Name: '-' }
     this.setState({ temp_data: newData })
   }
   handleSubmit = index => async () => {
@@ -96,7 +104,12 @@ class HomePage extends Component {
         title: 'Driver',
         dataIndex: 'driver',
         render: (text, record, index) => {
-          const value = `${this.state.temp_data[index].Driver_ID} : ${this.state.temp_data[index].Name}`
+          var value
+          if (this.state.temp_data[index].Driver_ID == null) {
+            value = '-'
+          } else {
+            value = `${this.state.temp_data[index].Driver_ID} : ${this.getDriverName(this.state.temp_data[index].Driver_ID)}`
+          }
           return (
             <EditableField
               type="select"

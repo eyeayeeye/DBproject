@@ -18,18 +18,6 @@ const buttonItemLayout = {
 }
 const FormItem = Form.Item
 
-function handleChange(value) {
-  console.log(`selected ${value}`)
-}
-
-function handleBlur() {
-  console.log('blur')
-}
-
-function handleFocus() {
-  console.log('focus')
-}
-
 class AddPage extends React.Component {
   state = {
     student: [],
@@ -55,7 +43,8 @@ class AddPage extends React.Component {
 
   render() {
     return (
-      <div>
+      <React.Fragment>
+        <span style={{ letterSpacing: '1px', fontSize: '20px', fontWeight: 'bold' }}>Add student to a Route Group</span>
         <Form>
           <FormItem {...inputItemLayout} label="Enter RGID">
             <Input
@@ -85,7 +74,7 @@ class AddPage extends React.Component {
             <Button onClick={this.handleSubmit}>Submit</Button>
           </FormItem>
         </Form>
-      </div>
+      </React.Fragment>
     )
   }
 }

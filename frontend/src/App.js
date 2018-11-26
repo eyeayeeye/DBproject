@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Mention } from 'antd'
 import HomePage from './HomePage'
 import CreatePage from './CreatePage'
 import AddPage from './AddPage'
+import StudentsTable from './StudentsTable'
 import './App.css'
 const { Header, Content, Footer, Sider } = Layout
 
@@ -10,11 +11,36 @@ class App extends Component {
   state = {
     view: 1
   }
+  renderViews = view => {
+    switch (view) {
+      case 1:
+        return <HomePage />
+      case 2:
+        return <CreatePage />
+      case 3:
+        return <AddPage />
+      case 4:
+        return <StudentsTable />
+      default:
+        return <div>NONE</div>
+    }
+  }
+  onCollapse = collapsed => {
+    this.setState({ collapsed })
+  }
   render() {
     return (
       <Layout style={{ height: '100vh' }}>
-        <Sider breakpoint="lg" collapsedWidth="0" width="230" style={{ paddingTop: '50px' }}>
-          <div className="logo" />
+        <Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          collapsible
+          collapsed={this.state.collapsed}
+          onCollapse={this.onCollapse}
+          width="230"
+          style={{ paddingTop: '20px', paddingBottom: '15px' }}
+        >
+          <div className="logo">RGMS</div>
           <Menu
             theme="dark"
             mode="inline"
@@ -33,7 +59,11 @@ class App extends Component {
             </Menu.Item>
             <Menu.Item key={3}>
               <Icon type="user-add" />
-              <span className="nav-text">Add/Remove students</span>
+              <span className="nav-text">Add students to RG</span>
+            </Menu.Item>
+            <Menu.Item key={4}>
+              <Icon type="user" />
+              <span className="nav-text">Students</span>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -54,7 +84,7 @@ class App extends Component {
           </Header>
           <Content style={{ margin: '24px 25px 0' }}>
             <pre style={{ padding: 24, background: '#fff', minHeight: 250, width: '100%', textAlign: 'center' }}>
-              {this.state.view == 1 ? <HomePage /> : this.state.view == 2 ? <CreatePage /> : <AddPage />}
+              {this.renderViews(this.state.view)}
             </pre>
           </Content>
         </Layout>
